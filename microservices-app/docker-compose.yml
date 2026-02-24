@@ -2,6 +2,17 @@ version: "3.8"
 
 services:
 
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "5000:5000"
+    depends_on:
+      - auth-service
+      - product-service
+      - order-service
+    networks:
+      - micro-net
+
   auth-service:
     build: ./auth-service
     ports:
