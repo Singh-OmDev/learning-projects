@@ -35,6 +35,8 @@ app.use(
   })
 )
 
+ 
+
 // Product routes
 app.use(
   "/api/products",

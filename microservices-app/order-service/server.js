@@ -20,10 +20,14 @@ const Order = mongoose.model("Order", {
 const axios = require("axios")
 
 app.post("/api/orders", async (req, res) => {
-  const { userId, productId, quantity } = req.body
+  const { productId, quantity } = req.body
+
+  // Basic validation
+  if (!productId || !quantity) {
+    return res.status(400).json({ message: "Missing required fields" })
+  }
 
   try {
-    // Verify product exists
     const productResponse = await axios.get(
       `http://product-service:5002/api/products/${productId}`
     )
@@ -33,7 +37,6 @@ app.post("/api/orders", async (req, res) => {
     }
 
     const order = await Order.create({
-      userId,
       productId,
       quantity
     })
