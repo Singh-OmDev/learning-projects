@@ -17,9 +17,32 @@ const Order = mongoose.model("Order", {
   quantity: Number
 })
 
+const axios = require("axios")
+
 app.post("/api/orders", async (req, res) => {
-  const order = await Order.create(req.body)
-  res.json(order)
+  const { userId, productId, quantity } = req.body
+
+  try {
+    // Verify product exists
+    const productResponse = await axios.get(
+      `http://product-service:5002/api/products/${productId}`
+    )
+
+    if (!productResponse.data) {
+      return res.status(400).json({ message: "Product not found" })
+    }
+
+    const order = await Order.create({
+      userId,
+      productId,
+      quantity
+    })
+
+    res.json(order)
+
+  } catch (err) {
+    res.status(400).json({ message: "Invalid product" })
+  }
 })
 
 app.get("/api/orders", async (req, res) => {
