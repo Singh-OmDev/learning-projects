@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+
+  auth-service:
+    build: ./auth-service
+    ports:
+      - "5001:5001"
+    depends_on:
+      - auth-db
+    networks:
+      - micro-net
+
+  auth-db:
+    image: mongo
+    container_name: auth-db
+    ports:
+      - "27017:27017"
+    networks:
+      - micro-net
+
+  product-service:
+    build: ./product-service
+    ports:
+      - "5002:5002"
+    depends_on:
+      - product-db
+    networks:
+      - micro-net
+
+  product-db:
+    image: mongo
+    container_name: product-db
+    networks:
+      - micro-net
+
+  order-service:
+    build: ./order-service
+    ports:
+      - "5003:5003"
+    depends_on:
+      - order-db
+    networks:
+      - micro-net
+
+  order-db:
+    image: mongo
+    container_name: order-db
+    networks:
+      - micro-net
+
+networks:
+  micro-net:
