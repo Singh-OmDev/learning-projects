@@ -19,7 +19,7 @@ const Order = mongoose.model("Order", {
 
 const axios = require("axios")
 
-app.post("/api/orders", async (req, res) => {
+app.post("/", async (req, res) => {
   const { productId, quantity } = req.body
 
   // Basic validation
