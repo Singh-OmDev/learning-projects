@@ -47,6 +47,7 @@ app.use(
 // Order routes
 app.use(
   "/api/orders",
+  verifyToken,
   createProxyMiddleware({
     target: "http://order-service:5003",
     changeOrigin: true,
