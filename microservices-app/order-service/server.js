@@ -18,13 +18,16 @@ const Order = mongoose.model("Order", {
 })
 
 const axios = require("axios")
-
 app.post("/", async (req, res) => {
   const { productId, quantity } = req.body
+  const userId = req.headers["x-user-id"]
 
-  // Basic validation
   if (!productId || !quantity) {
     return res.status(400).json({ message: "Missing required fields" })
+  }
+
+  if (!userId) {
+    return res.status(401).json({ message: "Unauthorized" })
   }
 
   try {
@@ -37,6 +40,7 @@ app.post("/", async (req, res) => {
     }
 
     const order = await Order.create({
+      userId,
       productId,
       quantity
     })
