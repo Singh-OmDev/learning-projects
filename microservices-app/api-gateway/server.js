@@ -53,6 +53,9 @@ app.use(
   createProxyMiddleware({
     target: "http://order-service:5003",
     changeOrigin: true,
+    onProxyReq: (proxyReq, req) => {
+      proxyReq.setHeader("x-user-id", req.user.id)
+    }
   })
 )
 
