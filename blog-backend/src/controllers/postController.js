@@ -18,10 +18,16 @@ exports.createPost = async (req, res) => {
   }
 };
 
-// GET ALL POSTS WITH AUTHOR NAME (JOIN 🔥)
 exports.getAllPosts = async (req, res) => {
   try {
-    const posts = await pool.query(`
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const search = req.query.search || "";
+
+    const offset = (page - 1) * limit;
+
+    const posts = await pool.query(
+      `
       SELECT 
         posts.id,
         posts.title,
@@ -30,10 +36,25 @@ exports.getAllPosts = async (req, res) => {
         users.name AS author
       FROM posts
       JOIN users ON posts.user_id = users.id
+      WHERE posts.title ILIKE $1
       ORDER BY posts.created_at DESC
-    `);
+      LIMIT $2 OFFSET $3
+      `,
+      [`%${search}%`, limit, offset]
+    );
 
-    res.json(posts.rows);
+    const total = await pool.query(
+      "SELECT COUNT(*) FROM posts WHERE title ILIKE $1",
+      [`%${search}%`]
+    );
+
+    res.json({
+      page,
+      totalPosts: parseInt(total.rows[0].count),
+      totalPages: Math.ceil(total.rows[0].count / limit),
+      posts: posts.rows,
+    });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
