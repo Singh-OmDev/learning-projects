@@ -12,6 +12,8 @@ services:
       - order-service
     networks:
       - micro-net
+    env_file:
+      - .env
 
   auth-service:
     build: ./auth-service
@@ -21,6 +23,8 @@ services:
       - auth-db
     networks:
       - micro-net
+    env_file:
+      - .env
 
   auth-db:
     image: mongo
@@ -38,6 +42,8 @@ services:
       - product-db
     networks:
       - micro-net
+    env_file:
+      - .env
 
   product-db:
     image: mongo
@@ -53,6 +59,8 @@ services:
       - order-db
     networks:
       - micro-net
+    env_file:
+      - .env
 
   order-db:
     image: mongo
