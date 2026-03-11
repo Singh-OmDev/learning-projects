@@ -31,16 +31,24 @@ async function putObject(filename, contentType){
       return url;
 }
 
-async function init() {
+  async function init() {
  const url = await getObjectURL("uploads/user-uploads/$(filename)");
   console.log("url for my jpg:", url);
 
-  //console.log(
-    //"URL for uploading a file",
-     //await putObject(`image-${Date.now().jpeg}`, "image/jpeg")
-
-  //)
+  
   
 }
+
+
+
+//async function init() {
+
+  ////console.log(
+    //"URL for uploading a file",
+    // await putObject(`image-${Date.now().jpeg}`, "image/jpeg")
+
+ // )
+  
+//}
 
 init();
