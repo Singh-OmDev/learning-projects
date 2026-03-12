@@ -5,37 +5,35 @@ import (
 	"fmt"
 )
 
- type Person struct {
-	 Name string `json: "name"`
-	  Age int `json : "age"`
-	   IsAdult bool `json: "is_adult"`
- }
+type Person struct {
+	Name    string `json:"name"`
+	Age     int    `json:"age"`
+	IsAdult bool   `json:"is_adult"`
+}
 
 func main() {
 
-	fmt.Println("getting started with json")
+	fmt.Println("Getting started with JSON")
 
-	 person := Person {Name: "om", Age:33, IsAdult : true}
-	  fmt.Println("person data is :", person)
+	person := Person{Name: "om", Age: 33, IsAdult: true}
+	fmt.Println("Person struct:", person)
 
-	   //convert person into json encoding   marshall is  used to convert the data  into json format 
+	// Marshal (Struct → JSON)
+	jsonData, err := json.Marshal(person)
+	if err != nil {
+		fmt.Println("Error marshalling:", err)
+		return
+	}
 
-	     jsonData , err := json.Marshal(person)
+	fmt.Println("JSON data:", string(jsonData))
 
-		 if err != nil {
-			 fmt.Println("error marhalling", err)
-			 return
-		 }
-		  fmt.Println("person data is :" , string(jsonData))
+	// Unmarshal (JSON → Struct)
+	var personData Person
+	err = json.Unmarshal(jsonData, &personData)
+	if err != nil {
+		fmt.Println("Error unmarshalling:", err)
+		return
+	}
 
-		   //now decoding the json data 
-
-		    var persondata Person 
-			 err = json.Unmarshal(jsonData, & persondata)
-			  if err !=  nil {
-				 fmt.Println( "error unmarshalling ", err)
-				  return
-
-			  }
-			   fmt.Println("person data is  after unmarshalling:", persondata)
+	fmt.Println("After unmarshalling:", personData)
 }
