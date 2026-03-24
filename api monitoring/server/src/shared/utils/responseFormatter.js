@@ -1,4 +1,3 @@
- 
 /**
  * ResponseFormatter - Utility class for formatting API responses in a consistent structure.
  * This class can be extended in the future to include additional response types or features as needed.
