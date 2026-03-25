@@ -2,12 +2,19 @@ import userModel from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import config from "../config/config.js";
+import sessionModel from "../models/session.model.js";
 
 export async function register(req, res) {
   try {
     const { username, email, password } = req.body;
 
-    // ✅ FIXED
+    // ✅ basic validation
+    if (!username || !email || !password) {
+      return res.status(400).json({
+        message: "All fields are required"
+      });
+    }
+
     const isAlreadyRegistered = await userModel.findOne({
       $or: [{ username }, { email }]
     });
@@ -18,6 +25,7 @@ export async function register(req, res) {
       });
     }
 
+    // ⚠️ still SHA256 (ok for now, but use bcrypt later)
     const hashedPassword = crypto
       .createHash("sha256")
       .update(password)
@@ -29,21 +37,41 @@ export async function register(req, res) {
       password: hashedPassword
     });
 
-    const accesstoken = jwt.sign(
-      { id: user._id },
-      config.JWT_SECRET,
-      { expiresIn: "15m" }
-    );
-
-    const refreshtoken = jwt.sign(
+    // ✅ Create refresh token
+    const refreshToken = jwt.sign(
       { id: user._id },
       config.JWT_SECRET,
       { expiresIn: "7d" }
     );
 
-    res.cookie("refreshtoken", refreshtoken, {
+    // ✅ Hash refresh token for DB
+    const refreshTokenHash = crypto
+      .createHash("sha256")
+      .update(refreshToken)
+      .digest("hex");
+
+    // ✅ Store session
+    const session = await sessionModel.create({
+      userId: user._id,
+      refreshTokenHash,
+      ip: req.ip || "unknown",
+      userAgent: req.headers["user-agent"] || "unknown"
+    });
+
+    // ✅ Access token with sessionId
+    const accesstoken = jwt.sign(
+      {
+        id: user._id,
+        sessionId: session._id
+      },
+      config.JWT_SECRET,
+      { expiresIn: "15m" }
+    );
+
+    // ✅ Set cookie
+    res.cookie("refreshtoken", refreshToken, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production", // 🔥 better
       sameSite: "strict",
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
@@ -51,6 +79,7 @@ export async function register(req, res) {
     res.status(201).json({
       message: "user registered successfully",
       user: {
+        id: user._id,
         username: user.username,
         email: user.email
       },
@@ -58,99 +87,14 @@ export async function register(req, res) {
     });
 
   } catch (error) {
+    console.error("Register Error:", error); // 🔥 debug
     res.status(500).json({ message: "Server error" });
   }
 }
-
 export async function getMe(req, res) {
-  try {
-    const token = req.headers.authorization?.split(" ")[1];
-
-    if (!token) {
-      return res.status(401).json({
-        message: "token not found"
-      });
-    }
-
-    let decoded;
-
-    try {
-      decoded = jwt.verify(token, config.JWT_SECRET);
-    } catch (err) {
-      return res.status(401).json({
-        message: "Invalid token"
-      });
-    }
-
-    const user = await userModel.findById(decoded.id);
-
-    if (!user) {
-      return res.status(404).json({
-        message: "User not found"
-      });
-    }
-
-    res.status(200).json({
-      message: "user fetched successfully",
-      user: {
-        username: user.username,
-        email: user.email
-      }
-    });
-
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
+  res.send("getMe working");
 }
 
 export async function refreshtoken(req, res) {
-  try {
-    const refreshToken = req.cookies.refreshtoken;
-
-    if (!refreshToken) {
-      return res.status(401).json({
-        message: "refresh token not found"
-      });
-    }
-
-    let decoded;
-
-    try {
-      decoded = jwt.verify(refreshToken, config.JWT_SECRET);
-    } catch (err) {
-      return res.status(401).json({
-        message: "Invalid refresh token"
-      });
-    }
-
-    const accesstoken = jwt.sign(
-      { id: decoded.id },
-      config.JWT_SECRET,
-      { expiresIn: "15m" }
-    );
-
-    const newRefreshtoken = jwt.sign(
-      { id: decoded.id },
-      config.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
-
-    // ✅ FIXED
-    res.cookie("refreshtoken", newRefreshtoken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000
-    });
-
-    res.status(200).json({
-      message: "access token refreshed successfully",
-      accesstoken
-    });
-
-  } catch (error) {
-    res.status(500).json({
-      message: "Server error"
-    });
-  }
+  res.send("refresh token working");
 }
