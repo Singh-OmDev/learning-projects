@@ -1,5 +1,6 @@
 import express  from "express"
  import authRouter from  './routes/auth.route.js';
+  import cookieParser from "cookie-parser";
 
  import morgan from "morgan";
 
@@ -7,6 +8,8 @@ import express  from "express"
 
   app.use (express.json());
    app.use (morgan("dev"))
+    app.use (cookieParser ());
+    
 
     app.use("/api/auth", authRouter);
 
