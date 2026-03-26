@@ -98,3 +98,17 @@ export async function getMe(req, res) {
 export async function refreshtoken(req, res) {
   res.send("refresh token working");
 }
+
+
+export async function logout (req, res){
+   const refreshToken  = req.cookies.refreshToken;
+     if ( !refreshToken){
+
+       res.status(400).json({
+         message: "refresh token not found"
+       })
+     }
+
+     
+
+}

@@ -12,7 +12,7 @@ console.log(authController);
 
  authRouter.get("/get-me",authController.getMe)
 
-
+authRouter.get("/logout", authController.logout)
  
   authRouter.get("/refresh-token",authController.refreshtoken)
 
