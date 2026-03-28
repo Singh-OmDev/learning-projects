@@ -100,6 +100,8 @@ export async function refreshtoken(req, res) {
 }
 
 
+ //logout functionality
+
 export async function logout (req, res){
    const refreshToken  = req.cookies.refreshToken;
      if ( !refreshToken){
