@@ -14,7 +14,9 @@ function App() {
   const [ users, setUsers ] = useState([])
 
   const ydoc = useMemo(() => new Y.Doc(), [])
-  const yText = useMemo(() => ydoc.getText("monaco"), [ ydoc ])
+  const yText = useMemo(() => ydoc.getText("monaco"), [ ydoc ]
+)
+//
 
 
   const handleMount = (editor) => {
