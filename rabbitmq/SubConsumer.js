@@ -6,7 +6,7 @@ async function recvMail() {
     const connection = await amqp.connect("amqp://localhost");
     const channel = await connection.createChannel();
 
-    const queue = "mail_queue";
+    const queue = "subscribed_users_mail_queue";
 
     // make sure queue exists
     await channel.assertQueue(queue, { durable: false });
@@ -14,11 +14,11 @@ async function recvMail() {
     console.log("📥 Waiting for messages...");
 
     // consume messages
-    channel.consume(queue, (msg) => {
+    channel.consume("subscribed_users_mail_queue", (msg) => {
       if (msg !== null) {
         const data = JSON.parse(msg.content.toString());
 
-        console.log("📧 Mail Received:");
+        console.log("📧 Mail Received from subscribed users:");
         console.log(data);
 
         // acknowledge message
