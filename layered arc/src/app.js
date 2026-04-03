@@ -3,10 +3,13 @@ const express = require('express');
 const cors = require('cors');
 
 
+ const apiRoutes = require('./routes/index.route');
  const config = require('./config');
 
 
 const app = express();
+app.use (config.api.prefix, apiRoutes);
+
 
 
  app.use (cors({
@@ -28,3 +31,5 @@ const app = express();
  });
 
     module.exports = app;
+
+    
