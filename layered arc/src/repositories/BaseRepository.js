@@ -1,3 +1,5 @@
+const { model } = require("mongoose");
+
 class BaseRepository {
     constructor(model) {
         this.model = model;
@@ -43,3 +45,4 @@ class BaseRepository {
         return await this.model.findByIdAndDelete(id).exec();
     }       
 }
+module.exports = BaseRepository;
