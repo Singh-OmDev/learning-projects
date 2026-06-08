@@ -13,7 +13,7 @@ function abcd(obj: User) {
   console.log(obj.name);
 }
 
-// Function call with correct object
+// Function call with correct objectt
 abcd({ name: "om", email: "om@gmail.com", password: "om" });
      
                 // INterface extends
