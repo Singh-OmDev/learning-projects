@@ -70,7 +70,7 @@ export const createStudent = async (req, res)=> {
        try {
          const student = await Student.findByIdAndUpdate(req.params.id , req.body, {new:true})
 
-          res.staus (200).json(student);
+          res.status (200).json(student);
            console.log ( "the updated students is " , student);
          if (!student){
              return res.status (404).json({
@@ -91,4 +91,118 @@ export const createStudent = async (req, res)=> {
    }
    
 
+    export const deleteStudentById = async (req, res)=> {
+          try {
+             const student = await Student.findByIdAndDelete(req.params.id);
+              res.status (200).json ({
+                 success:true,
+                 message: "student data deleted successfully",
+                 data: student,
+              })
 
+            console.log ( "the deleted student is ", student);
+
+
+             if (!student ){
+                  return res.status ( 404).json  ({
+                     success:false,
+                      message:"student not found",
+                  })
+             }
+    }
+     catch (error ){
+         res.status (500).json ({
+             success:false,
+              message: error.message,
+
+         })
+     }
+
+    }
+
+      export const searchStudentByName = async (req, res) => {
+
+   if (!req.query.name) {
+      return res.status(400).json({
+         success: false,
+         message: "please provide a name to search"
+      });
+   }
+
+   const name = req.query.name;
+
+   try {
+
+      const students = await Student.find({
+         name: {
+            $regex: name,
+            $options: "i"
+         }
+      });
+
+      if (students.length === 0) {
+         return res.status(404).json({
+            success: false,
+            message: `No student found with name ${name}`
+         });
+      }
+
+      res.status(200).json({
+         success: true,
+         count: students.length,
+         data: students,
+         message: `student with matching name ${name} retrieved successfully`
+      });
+
+      console.log(students);
+
+   } catch (error) {
+
+      res.status(500).json({
+         success: false,
+         message: error.message
+      });
+
+   }
+};
+
+ export const searchStudentByCity = async ( req, res)=> {
+       if (!req.query.city){
+          return res.status (400).json ({
+             success: false,
+              message: "please provide a city to search",
+
+          })
+
+           
+       }
+        const city = req.query.city;
+          try {
+             const students = await Student.find ({
+                  city: {
+                     $regex: city,
+                     $options: "i",
+
+                  }
+                   
+             })
+              if (students.Length === 0){
+                  return res.status (404).json ({
+
+                      success: fals,
+                      message: `no student found with  city $ {city}`,
+
+                     
+                  })
+
+                   
+              }
+          }
+           catch (error){
+              res.status (500).json ({
+                 success: false,
+                  message: error.message,
+                  
+              })
+           }
+ }

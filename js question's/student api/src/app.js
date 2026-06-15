@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json ());
 
  app.use ("/api/students", studentsRoute);
-app.use("/api/students", studentsRoute);
+  app.use ("/api/search", studentsRoute);
 
 export default app;
 

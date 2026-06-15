@@ -1,21 +1,26 @@
 import express from "express";
- import {createStudent} from "../controllers/studentControllers.js";
-  import  {getAllStudents}  from "../controllers/studentControllers.js";
-   import{getStudentById} from "../controllers/studentControllers.js";
-  
-    import {updateStudentById} from "../controllers/studentControllers.js";
-    
 
+import {
+  createStudent,
+  getAllStudents,
+  getStudentById,
+  updateStudentById,
+  deleteStudentById,
+  searchStudentByName,
+  searchStudentByCity
+} from "../controllers/studentControllers.js";
 
-   const router = express.Router();
+const router = express.Router();
 
-   router.post("/", createStudent);
-    router.get("/", getAllStudents);
+router.post("/", createStudent);
 
+router.get("/search", searchStudentByName);
+router.get("/search/city", searchStudentByCity);
+
+router.get("/", getAllStudents);
 router.get("/:id", getStudentById);
 
 router.put("/:id", updateStudentById);
+router.delete("/:id", deleteStudentById);
 
-
-   export default router ;
-   
+export default router;
