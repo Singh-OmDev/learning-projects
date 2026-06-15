@@ -77,6 +77,22 @@ const app = express ();
             
 
 
-     })
 
-     
+     })
+      app.patch ("/update-student", (req,res)=> {
+
+         const {name} = req.body;
+          res.send (`student name updated successfully to $ {name}`);
+           console.log (`student name updated successfully to ${name}`);
+
+
+
+      })
+
+         app.delete ("delete-student", (req, res)=> {
+             const{name , age , city} = req.body;
+             
+              res.send (`student data deleted successfully for $ {name}`);
+               console.log  (`student data deleted successfully for ${name}`);
+         })
+
