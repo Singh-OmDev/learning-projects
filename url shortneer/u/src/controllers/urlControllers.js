@@ -58,3 +58,40 @@ export const redirectToOriginalUrl = async (req, res) => {
     });
   }
 };
+
+  export const countClicks = async (req, res)=> {
+     try {
+       const { shortCode } = req.params;
+
+        const url = await Url.find
+One({ shortCode });
+
+        if (!url) {
+          return res.status(404).json({
+            success: false,
+            message: "Short URL not found",
+          });
+        }
+
+        url.clicksCount += 1;
+        await url.save();
+
+        res.status(200).json({
+          success: true,
+          message: "Click count updated",
+          data: {
+            shortCode,
+            clicksCount: url.clicksCount,
+          },
+        });
+     }
+      catch (error){
+        res.status(500).json({  
+          success: false,
+          message: "Error while counting clicks",
+          error: error.message,
+        });
+        
+      }
+
+  }
