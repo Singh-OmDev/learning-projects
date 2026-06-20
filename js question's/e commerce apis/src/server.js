@@ -4,6 +4,7 @@ import User from "./models/User.js";
  import app from "./app.js";
   import connectDB from "./config/db.js";
 
+import productRoutes from "./routes/productRoutes.js";
 
  import authRoutes from "./routes/authRoutes.js";
 
@@ -14,13 +15,17 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 
-
+app.use(
+  "/api/products",
+  productRoutes
+);
 
 app.get("/", (req, res) => {
     res.send("Welcome to the E-commerce API");
 }   
 );
 
+ 
 
 
 app.listen(process.env.PORT, () => {
