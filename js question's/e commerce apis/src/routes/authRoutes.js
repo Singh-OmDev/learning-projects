@@ -4,7 +4,8 @@ import express from "express";
 
 import {protect} from "../middleware/authMiddleware.js";
 import {isAdmin} from "../middleware/adminMiddleware.js";
-
+ import {refreshToken} from "../controllers/authController.js"
+  import {generateAccessToken, generateRefreshToken} from  "../utils/generateTokens.js";
 
 
  
@@ -21,6 +22,15 @@ import {isAdmin} from "../middleware/adminMiddleware.js";
 router.get("/admin", protect, isAdmin, (req , res)=> {
     res.json({message:"welcome admin"});
 })
+
+
+router.post(
+  "/refresh-token",
+  refreshToken
+);
+
+
+
     export default router;
 
 
