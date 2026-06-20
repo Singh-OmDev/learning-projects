@@ -7,6 +7,8 @@ import {isAdmin} from "../middleware/adminMiddleware.js";
  import {getAllProducts , getProductById} from "../controllers/productController.js";
   import {updateProduct} from "../controllers/productController.js";
 
+ import {deleteProduct} from "../controllers/productController.js";
+
 
 
 
@@ -26,6 +28,8 @@ router.get(
 
 
  router.put  ("/:id", protect, isAdmin, updateProduct);
- 
+
+  router.delete ("/:id", protect , isAdmin , deleteProduct);
+  
 
 export default router;
