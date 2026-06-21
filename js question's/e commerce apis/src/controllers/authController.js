@@ -71,13 +71,13 @@ export const login = async (req, res) => {
     }
 
     // Generate JWT
-    const accessToken =
+   const accessToken =
   generateAccessToken(user);
 
 const refreshToken =
   generateRefreshToken(user);
 
-res.json({
+return res.status(200).json({
   message: "Login successful",
   accessToken,
   refreshToken,

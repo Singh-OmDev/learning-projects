@@ -8,6 +8,8 @@ import productRoutes from "./routes/productRoutes.js";
 
  import authRoutes from "./routes/authRoutes.js";
 
+ import cartRoutes from "./routes/cartRoutes.js";
+
 dotenv.config();
 connectDB();
 
@@ -18,6 +20,12 @@ app.use("/api/auth", authRoutes);
 app.use(
   "/api/products",
   productRoutes
+);
+
+
+app.use(
+  "/api/cart",
+  cartRoutes
 );
 
 app.get("/", (req, res) => {

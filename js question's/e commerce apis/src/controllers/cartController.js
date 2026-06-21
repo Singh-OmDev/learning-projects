@@ -1,5 +1,5 @@
-import Cart from  "../models/Cart";
-import Product from "../models/Product";
+import Cart from  "../models/Cart.js";
+import Product from "../models/Product.js";
 
 
 
@@ -19,13 +19,13 @@ export const addToCart = async (req, res) => {
     }
 
     let cart = await Cart.findOne({
-      user: req.user.id,
+      user: req.user,
     });
 
     if (!cart) {
 
       cart = await Cart.create({
-        user: req.user.id,
+        user: req.user,
         items: [
           {
             product: productId,
@@ -71,6 +71,44 @@ export const addToCart = async (req, res) => {
 
     res.status(500).json({
       message: error.message,
+    });
+
+  }
+};
+
+ export const getCart = async (req, res) => {
+  try {
+
+    const cart = await Cart.findOne({
+      user: req.user
+    }).populate(
+      "items.product",
+      "name price stock category image"
+    );
+
+    if (!cart) {
+      return res.status(404).json({
+        message: "Cart not found"
+      });
+    }
+
+    let totalPrice = 0;
+
+    cart.items.forEach(item => {
+      totalPrice +=
+        item.product.price * item.quantity;
+    });
+
+    res.status(200).json({
+      totalItems: cart.items.length,
+      totalPrice,
+      cart
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message
     });
 
   }
