@@ -124,13 +124,16 @@ export const getAllOrders = async (
 
 };
 
- export const updateOrderStatus = async ( req, res)=> {
-    try {
-         const {status} = req.params;
-         const order = await Order.findById(req.params);
+ export const updateOrderStatus = async (req, res) => {
+  try {
 
+    const { status } = req.body;
 
-          if (!order) {
+    const order = await Order.findById(
+      req.params.id
+    );
+
+    if (!order) {
       return res.status(404).json({
         message: "Order not found",
       });
@@ -141,18 +144,17 @@ export const getAllOrders = async (
     await order.save();
 
     res.status(200).json({
-      message:
-        "Order status updated",
+      message: "Order status updated",
       order,
     });
 
-  } 
+  } catch (error) {
 
-    
-     catch (error){
-         res.status (500).json({message: "internal server error"});
+    console.log(error);
 
-         
+    res.status(500).json({
+      message: error.message,
+    });
 
-     }
- }
+  }
+};

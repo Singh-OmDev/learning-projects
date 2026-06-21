@@ -7,7 +7,7 @@ import {getAllOrders} from "../controllers/orderController.js";
 
  import {isAdmin} from "../middleware/adminMiddleware.js";
 
-
+import {updateOrderStatus} from "../controllers/orderController.js";
 
 
  const router  = express.Router();
@@ -23,6 +23,8 @@ router.get(
   getAllOrders
 );
 
+
+ router.patch  ("/:id/status", protect ,isAdmin, updateOrderStatus);
 
    export default router;
 
