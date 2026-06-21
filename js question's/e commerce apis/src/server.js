@@ -9,6 +9,7 @@ import productRoutes from "./routes/productRoutes.js";
  import authRoutes from "./routes/authRoutes.js";
 
  import cartRoutes from "./routes/cartRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -23,10 +24,13 @@ app.use(
 );
 
 
+
 app.use(
   "/api/cart",
   cartRoutes
 );
+
+app.use("/api/orders", orderRoutes);
 
 app.get("/", (req, res) => {
     res.send("Welcome to the E-commerce API");
