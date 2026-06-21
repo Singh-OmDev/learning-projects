@@ -5,6 +5,8 @@ import express from "express";
  import {protect} from "../middleware/authMiddleware.js";
 import {getAllOrders} from "../controllers/orderController.js";
 
+ import {isAdmin} from "../middleware/adminMiddleware.js";
+
 
 
 
@@ -14,7 +16,12 @@ import {getAllOrders} from "../controllers/orderController.js";
 
    router.get ("/", protect, getAllOrders);
 
-   
+router.get(
+  "/all",
+  protect,
+  isAdmin,
+  getAllOrders
+);
 
 
    export default router;
