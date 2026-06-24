@@ -70,3 +70,61 @@ export const addToWishlist = async (
   }
 
 };
+
+ export const getWishlist = async (req, res)=> {
+
+    try {
+        const wishlist = await Wishlist.findOne ({
+            user: req.user,
+
+        }).populate("products");
+
+        res.status (200).json ({
+            wishlist,
+
+        })
+    }
+     catch (error){
+         res.status (500).json 
+        ({
+             message: error.message,
+        })
+     }
+ }
+
+  export const removeFromWhishlist = async (req, res)=> {
+    try {
+         const wishlist = await Wishlist.finOne({
+            user: req.user,
+
+
+         });
+          if (!wishlist){
+            return res.status (404).json ({
+                 message: "wishlist not found",
+            })
+          }
+           wishlist.products =
+            wishlist.products.filter (
+                 product => 
+                     product.toString()!==
+                  req.params.includes
+            );
+            await wishlist.save();
+
+             res.status (200).json ({
+                 message: "product removed",
+                 wishlist,
+             });
+
+
+    }
+     catch (error){
+         res.status (500).json({
+             message: error.message,
+
+         });
+
+         
+     }
+  }

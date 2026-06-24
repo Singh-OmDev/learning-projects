@@ -10,8 +10,12 @@ import productRoutes from "./routes/productRoutes.js";
 
  import cartRoutes from "./routes/cartRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
-
+import reviewRoutes from "./routes/reviewRoutes.js"
  import wishlistRoutes from "./routes/wishlistRoute.js";
+
+  import notificationRoutes from  "./routes/notificationRoutes.js";
+
+
 dotenv.config();
 connectDB();
 
@@ -19,10 +23,14 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 
+ app.use ("/api/notifications",notificationRoutes);
+
 app.use(
   "/api/products",
   productRoutes
 );
+ app. use ("/api/reviews", reviewRoutes);
+ 
 
  app.use  ("/api/wishlist", wishlistRoutes);
 
