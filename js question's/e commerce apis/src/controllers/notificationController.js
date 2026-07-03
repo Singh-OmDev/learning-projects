@@ -43,27 +43,33 @@ export const getNotifications = async (req, res) => {
   }
 };
 
- export const markAsRead = async  ( req, res)=> {
-    try {
-          const notification = await Notification.findById(req.params);
+ export const markAsRead = async (req, res) => {
+  try {
 
+    const notification =
+      await Notification.findById(req.params.id);
 
-if (!notification ){
-      return res.status (404).json ({message: "notification not found"});
-
-
-
-}
-
- notification .isRead = true;
- await notification.save ();
- res.status (200).json ({success: true, data: notification});
-
+    if (!notification) {
+      return res.status(404).json({
+        message: "notification not found",
+      });
     }
-     catch (error){
-         res.status (500).json ({message:  "server error", error: error.message});
 
-         
+    notification.isRead = true;
 
-     }
- }
+    await notification.save();
+
+    res.status(200).json({
+      success: true,
+      data: notification,
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: "server error",
+      error: error.message,
+    });
+
+  }
+};

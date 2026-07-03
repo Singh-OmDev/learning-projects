@@ -1,6 +1,7 @@
 import Order from "../models/Order.js";
 
  import Cart from "../models/Cart.js";
+ import Notification from "../models/Notification.js";
 
   import Product from "../models/Product.js";
 
@@ -53,6 +54,19 @@ import Order from "../models/Order.js";
       items: orderItems,
       totalPrice,
     });
+
+
+     await Notification.create({
+  user: req.user.id,
+
+  title: "Order Placed",
+
+  message:
+    `Your order #${order._id}
+     has been placed successfully`,
+
+  type: "order",
+});
 
     // Clear Cart
     cart.items = [];
