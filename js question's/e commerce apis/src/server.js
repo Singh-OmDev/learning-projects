@@ -14,7 +14,7 @@ import reviewRoutes from "./routes/reviewRoutes.js"
  import wishlistRoutes from "./routes/wishlistRoute.js";
 
   import notificationRoutes from  "./routes/notificationRoutes.js";
-
+import "./workers/notificationWorker.js";
 
 dotenv.config();
 connectDB();
