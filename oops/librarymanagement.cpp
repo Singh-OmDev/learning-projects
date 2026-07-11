@@ -144,14 +144,125 @@ class Book {
 
                    cout <<"book not found"<<endl;
 
-                   
+
              }
           }
+
+           //remove books
+             void removeBook ( int id){
+                 for(auto it  = books.begin();
+                  it  != books.end();
+
+                   it++)
+                   {
+                     if (it->getId()== id){
+                         books.erase(it);
+                          cout <<"books removed"<<endl;
+
+                          return;
+
+                     }
+                   }
+
+                    cout <<" book not found"<<endl;
+
+
+             }
 
 
 
 
  };
+
+
+  class User {
+
+     protected:
+      
+
+      int id;
+       string name;
+         
+        public: 
+         User ( int id , string name){
+             this-> id = id;
+              this-> name =  name;
+
+         }
+
+          virtual void  showRole (){
+             cout <<"normal user"<<endl;
+
+
+          }
+
+
+          void displayUser (){
+             cout <<"ID" <<id<<endl;
+              cout<< "name"<<name <<endl;
+
+          }
+        
+
+
+  };
+
+   class Student : public  User {
+     private:
+      int rollNo;
+
+       public: 
+        Student(
+             int id,
+              string name,
+               int rollNo
+
+        ): User (id , name)
+         {
+             this-> rollNo = rollNo;
+
+         }
+          void diplayStudent (){
+             displayUser ();
+              cout <<"rollNo" <<rollNo <<endl;
+
+              
+          }
+
+           void showRole () override{
+             cout <<"role : student"<<endl;
+
+           }
+
+         
+       
+     
+   };
+
+    class Admin :public User {
+         public:
+
+           Admin  ( int id , string name): User ( id  , name){
+
+           }
+
+            void addBookPermission (){
+                 cout <<name << "can add book"<<endl;
+
+            }
+
+ void showRole () override {
+     cout <<"role : admin"<<endl;
+
+
+ }
+            
+
+
+
+    };
+
+
 
 
 
@@ -170,6 +281,31 @@ class Book {
 
           lib.addBook (b1);
            lib.showBooks();
+
+           lib.searchBook(101);
+
+            Student s1 (1, "John", 123);
+             s1.diplayStudent();
+
+             Admin a1 (2, "Alice");
+              a1.addBookPermission();
+
+               User * user ;
+               Student s1 (4 ,"om");
+                Admin a1 (2,  "admin");
+
+                 user = &s1;
+
+                  user->showRole();
+
+                   user = &a1;
+
+                    user->showRole();
+
+                     return 0;
+                     
+
+
 
 
 
