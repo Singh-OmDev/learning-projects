@@ -97,6 +97,53 @@
   };
 
 
+   /// parking lot 
+
+    
+    class Parkinglot  {
+         private:
+          vector <Vehicle * > vehicles;
+            public:
+
+               void addVehicle(Vehicle * vehicle)
+               {
+                  vehicles.push_back (vehicle);
+                   vehicle-> park ();
+
+                    
+               }
+ void  removeVehicle ( string  number){
+      for ( int i  = 0; i <vehicles.size (); i++){
+         if ( vehicles[i]-> getVehicleNumber () == number){
+             vehicles[i]-> unpark ();
+              delete vehicles[i];
+               vehicles.erase (vehicles.begin () + i);
+                cout <<"vehicle removed successfully"<<endl;
+                 return;
+
+         }
+      }
+ }
+  void  removeVehicle ( string number){
+     for ( int i = 0; i<vehicles.size (); i++){
+
+        if ( vehicles[i]-> getVehicleNumber () == number){
+            vehicles[i]-> unpark ();
+             delete vehicles[i];
+              vehicles.erase (vehicles.begin () + i);
+               cout <<"vehicle removed successfully"<<endl;
+                return;
+
+        }
+
+     }
+  }
+
+
+
+    };
+
+
 
 
 
