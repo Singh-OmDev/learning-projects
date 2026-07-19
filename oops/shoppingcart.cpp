@@ -33,20 +33,44 @@
                     
                  
             }
+
+
+             int getId (){
+                  return id ;
+                   
+             }
+
+              string getName (){
+                 return name;
+
+              }
+
+               double getPrice (){
+                 return price;
+
+               }
+
+                int getStock (){
+                     return stock ;
+
+                }
   };
 
   int main (){
 
-      Product p1 (1, "Laptop", 55000, 10);
-       Product p2 (2, "mouse", 999, 20);
-        Product p3 (3 , "keyboard", 1999, 15);
+     vector <Product> products;
+      products.push_back(Product (2, "laptop", 550000 , 10));
+        products.push_back(Product (3, "mobile", 25000 , 20));
+         products.push_back(Product (4, "headphone", 5000 , 30));
+            products.push_back(Product (5, "keyboard", 2000 , 40));
+             products.push_back(Product (6, "mouse", 1000 , 50));
+    
+            for ( int i = 0; i<products.size (); i++){
+                products[i].display ();
+            }
+    
+             return 0; 
 
-
-        p1.display ();
-         p2.display ();
-          p3.display ();
-           return 0;
-           
 
 
 
