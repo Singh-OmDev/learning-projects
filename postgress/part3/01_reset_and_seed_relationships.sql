@@ -24,6 +24,32 @@ CREATE EXTENSION  IF NOT EXISTS pgcrypto;
                    views INTEGER NOT NULL DEFAULT 0  CHECK (views >= 0 )
 
 
+
+
          );
 
 
+ CREATE TABLE comments (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+       post_id UUID NOT NULL REFERENCES posts (id) ,
+
+         body TEXT NOT NULL
+ );
+
+
+
+CREATE TABLE tags (
+     
+
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid ()
+
+       name  TEXT NOT NULL UNIQUE
+);
+
+     CREATE TABLE post_tags (
+         post_id UUID NOT NULL REFERENCES posts (id) ,
+          tag_id UUID NOT NULL REFERENCES tags (id) ,
+           PRIMARY KEY (post_id, tag_id)
+         
+     );
