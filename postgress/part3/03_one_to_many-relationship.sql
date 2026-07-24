@@ -18,4 +18,5 @@
            INNER JOIN posts
             ON users.id = posts.user_id
              ORDER BY users.name , posts.title;
+             --post
               
