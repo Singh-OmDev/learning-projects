@@ -6,8 +6,8 @@
           if ( retries  === 0) 
              throw error 
              await new Promise  ( resolve => setTimeout ( resolve , delay))
-              return  retry ( fn  , retires -1 , delay *2);
-              
+              return  retry ( fn  , retires - 1 , delay *2);
+
       }
      
  }
