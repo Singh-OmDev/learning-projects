@@ -1,10 +1,13 @@
 import express from "express";
+import fileRoutes from "./routes/file.routes";
  
   const app = express ();
    
    //middleware to parse JSON  requests body
     app.use ( express.json ());
 
+     app.use("/files", fileRoutes);
+     
      // test route
       app.get ("/", ( req, res)=> {
           res.json ({
@@ -14,5 +17,7 @@ import express from "express";
       });
 
         export default app;
+
         
+
 
