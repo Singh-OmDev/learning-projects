@@ -1,6 +1,6 @@
  const express = require ('express');
 
-  const cors = require ( cors);
+  const cors = require ('cors');
    const helmet = require  ('helmet');
 
     const morgan = require  ('morgan');
@@ -12,7 +12,7 @@
        //middlewares
         app.use ( express.json ());
          app.use (cors ());
-          app.us (helmet ());
+          app.use (helmet ());
 
            app.use (morgan ("dev"));
 
