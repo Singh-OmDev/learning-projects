@@ -1,5 +1,5 @@
  const prisma = require ("../config/prisma");
-
+ 
 
   const bcrypt = require ("bcryptjs");
    
@@ -30,6 +30,37 @@
 
       
    };
+    const loginUser = async ( email , password) => {
+         //find the user by email
+            const user  = await prisma.user.findUnique ({
+                 where : {
+                     email,
+
+                 },
+            });
+
+             //check if  user exists
+
+              if (!user){
+                 throw new Error ("invalid email or password");
+
+              }
+               //compare the password
+
+                const isPasswordCorrect  = await bcrypt.compare (
+                     password,
+                      user.password
+                );
+                if (!isPasswordCorrect) {
+                    throw new Error ("invalid email or password");
+                }
+                return user;
+    }
+
+
+
+    
     module.exports = {
          registerUser,
+         loginUser
     }
