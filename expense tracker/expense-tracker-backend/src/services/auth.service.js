@@ -30,6 +30,6 @@
 
       
    };
-    moduel.exports = {
+    module.exports = {
          registerUser,
     }

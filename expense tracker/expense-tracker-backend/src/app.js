@@ -6,6 +6,8 @@
     const morgan = require  ('morgan');
 
 
+     const authRoutes = require ("./routes/auth.routes");
+
 
       const app = express ();
 
@@ -17,6 +19,8 @@
            app.use (morgan ("dev"));
 
             //test route
+             app.use ("/api/auth", authRoutes);
+             
 
              app.get ("/", (req, res)=> {
                  res.json  ({
