@@ -1,4 +1,5 @@
  const express = require ('express');
+const protect = require ('./middlewares/auth.middleware');
 
   const cors = require ('cors');
    const helmet = require  ('helmet');
@@ -20,7 +21,7 @@
 
             //test route
              app.use ("/api/auth", authRoutes);
-             
+
 
              app.get ("/", (req, res)=> {
                  res.json  ({
@@ -29,6 +30,13 @@
 
                  });
              });
+              app.get ("/api/profile", protect  , (req, res)=> {
+                 res.json ({
+                     success: true,
+                      user: req.user,
+
+                 });
+              });
 
 
               module.exports = app;
