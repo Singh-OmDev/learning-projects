@@ -30,33 +30,29 @@
 
       
    };
-    const loginUser = async ( email , password) => {
-         //find the user by email
-            const user  = await prisma.user.findUnique ({
-                 where : {
-                     email,
+    const loginUser = async (email, password) => {
 
-                 },
-            });
+    const user = await prisma.user.findUnique({
+        where: {
+            email
+        }
+    });
 
-             //check if  user exists
-
-              if (!user){
-                 throw new Error ("invalid email or password");
-
-              }
-               //compare the password
-
-                const isPasswordCorrect  = await bcrypt.compare (
-                     password,
-                      user.password
-                );
-                if (!isPasswordCorrect) {
-                    throw new Error ("invalid email or password");
-                }
-                return user;
+    if (!user) {
+        throw new Error("Invalid email or password");
     }
 
+    const isPasswordCorrect = await bcrypt.compare(
+        password,
+        user.password
+    );
+
+    if (!isPasswordCorrect) {
+        throw new Error("Invalid email or password");
+    }
+
+    return user;
+};
 
 
     

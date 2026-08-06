@@ -27,33 +27,31 @@ const register = async (req, res) => {
 
  // login controller 
 
-  const login  = async ( req, res)=> {
-     try {
-         const user  = await authService.loginUser (req.body);
-          const token = generateToken (user.id);
-            res.status (200).json ({
-                 success: true,
-                  message: "user logged in successfully",
-                   token ,
-                    user : {
-                         id: user.id,
-                          name: user.name,
-                           email : user.email,
+const login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
 
-                    },
-                 
-            });
+        const user = await authService.loginUser(email, password);
 
-          
-     }
-      catch ( error ){
-          res.status ( 400).json ({
-             success : false,
-              message: error.message,
+        const token = generateToken(user.id);
 
-          });
-      }
-  };
+        res.status(200).json({
+            success: true,
+            message: "User logged in successfully",
+            token,
+            user: {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+            },
+        });
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
 
 module.exports = {
   register,
