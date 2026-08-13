@@ -56,6 +56,22 @@
                 }
   };
 
+  class Cart {
+     private:
+      vector <Product> items;
+       public:
+        void addProduct (const Product & product){
+             items.push_back(product);
+             cout <<product.getName () <<"added to cart successfully"<<endl;
+
+        }
+        
+
+
+  };
+
+   
+
   int main (){
 
      vector <Product> products;
