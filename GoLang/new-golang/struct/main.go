@@ -11,23 +11,28 @@
 
 	}
 
+	 func (s Student ) introduce (){
+   fmt.Println ("hello my  name is "  + s.name + " and I am " + string(s.age) + " years old. I am studying " + s.course)
 
+
+	 }
 
 
    func main (){
 
-	  student1 := Student {name : "john" , age : 20 , course : "golang"}
+	 student1 := Student{name: "john" , age : 20 , course : "computer Science"}
 
 
-	   fmt.Println ("before calling changeStudent function , student1 =" , student1)
 
-	    fmt.Println (student1.name)
-		 fmt.Println (student1.age)
-		  fmt.Println (student1.course)
-		   student1.name  = "james"
-		    student1.age  = 22
-			 student1.course = "python"
-			 fmt.Println ("after calling changeStudent function , student1 =" , student1)
-		    
-		   
+	  
+
+
+
+		 
+	    
+student1.introduce()
+
+	   
+
+	 
    }
