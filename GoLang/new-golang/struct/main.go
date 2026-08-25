@@ -1,38 +1,58 @@
- package main 
+package main
 
-  import "fmt"
+import "fmt"
 
+type Person struct {
+    name       string
+    gender     string
+    occupation string
+    salary     float64
+    address    string
+    role       string
+}
 
-    type Student struct {
+func (p Person) introduce() {
+    fmt.Printf(
+        "Hello my name is %s and I am a %s and my salary is %.2f and I live in %s and my role is %s\n",
+        p.name,
+        p.occupation,
+        p.salary,
+        p.address,
+        p.role,
+    )
+}
 
-		name string
-		 age int
-		  course string 
+type Student struct {
+    name   string
+    age    int
+    course string
+}
 
-	}
+func (s Student) introduce() {
+    fmt.Printf(
+        "Hello my name is %s and I am %d years old. I am studying %s\n",
+        s.name,
+        s.age,
+        s.course,
+    )
+}
 
-	 func (s Student ) introduce (){
-   fmt.Println ("hello my  name is "  + s.name + " and I am " + string(s.age) + " years old. I am studying " + s.course)
+func main() {
+    student1 := Student{
+        name:   "john",
+        age:    20,
+        course: "Computer Science",
+    }
 
+    person1 := Person{
+        name:        "john",
+        gender:      "male",
+        occupation:  "student",
+        salary:      0.0,
+        address:     "123 main street",
+        role:        "student",
+    }
 
-	 }
-
-
-   func main (){
-
-	 student1 := Student{name: "john" , age : 20 , course : "computer Science"}
-
-
-
-	  
-
-
-
-		 
-	    
-student1.introduce()
-
-	   
-
-	 
-   }
+    student1.introduce()
+    person1.introduce()
+}
