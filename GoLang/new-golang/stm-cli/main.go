@@ -1,28 +1,16 @@
+
+
 package main
 
 import "fmt"
 
-type Student struct {
-	ID     int
-	Name   string
-	Course string
-	Age    int
-}
-
-func (s Student) display() {
-	fmt.Println("ID:", s.ID)
-	fmt.Println("Name:", s.Name)
-	fmt.Println("Age:", s.Age)
-	fmt.Println("Course:", s.Course)
-	fmt.Println("--------------------")
-}
 
 func main() {
 
 	// Create map
 	students := make(map[int]Student)
 
-	// Add some initial students
+	// Initial students
 	students[1] = Student{
 		ID:     1,
 		Name:   "john",
@@ -46,6 +34,7 @@ func main() {
 		fmt.Println("3. Exit")
 		fmt.Println("4. Find student")
 		fmt.Println("5. Update student")
+		fmt.Println("6. Delete student")
 
 		var choice int
 
@@ -54,51 +43,23 @@ func main() {
 
 		switch choice {
 
-		// ---------------- ADD STUDENT ----------------
+		// ADD
 		case 1:
 
-			var id int
-			var name string
-			var age int
-			var course string
+			addStudent(students)
 
-			fmt.Println("Enter student ID:")
-			fmt.Scanln(&id)
-
-			fmt.Println("Enter student name:")
-			fmt.Scanln(&name)
-
-			fmt.Println("Enter student age:")
-			fmt.Scanln(&age)
-
-			fmt.Println("Enter student course:")
-			fmt.Scanln(&course)
-
-			students[id] = Student{
-				ID:     id,
-				Name:   name,
-				Age:    age,
-				Course: course,
-			}
-
-			fmt.Println("Student added successfully!")
-
-		// ---------------- VIEW STUDENTS ----------------
+		// VIEW
 		case 2:
 
-			fmt.Println("All Students:")
+			viewStudents(students)
 
-			for _, student := range students {
-				student.display()
-			}
-
-		// ---------------- EXIT ----------------
+		// EXIT
 		case 3:
 
 			fmt.Println("Exiting...")
 			return
 
-		// ---------------- FIND STUDENT ----------------
+		// FIND
 		case 4:
 
 			var id int
@@ -106,7 +67,7 @@ func main() {
 			fmt.Println("Provide the student ID to find:")
 			fmt.Scanln(&id)
 
-			student, ok := students[id]
+			student, ok := findStudent(students, id)
 
 			if ok {
 				fmt.Println("Student found:")
@@ -115,7 +76,7 @@ func main() {
 				fmt.Println("Student not found")
 			}
 
-		// ---------------- UPDATE STUDENT ----------------
+		// UPDATE
 		case 5:
 
 			var id int
@@ -126,56 +87,46 @@ func main() {
 			fmt.Println("Provide the student ID to update:")
 			fmt.Scanln(&id)
 
-			student, ok := students[id]
+			fmt.Println("Enter the new name:")
+			fmt.Scanln(&name)
 
-			if ok {
+			fmt.Println("Enter the new age:")
+			fmt.Scanln(&age)
 
-				fmt.Println("Enter the new name:")
-				fmt.Scanln(&name)
+			fmt.Println("Enter the new course:")
+			fmt.Scanln(&course)
 
-				fmt.Println("Enter the new age:")
-				fmt.Scanln(&age)
+			success := updateStudent(
+				students,
+				id,
+				name,
+				age,
+				course,
+			)
 
-				fmt.Println("Enter the new course:")
-				fmt.Scanln(&course)
-
-				// Update student
-				student.Name = name
-				student.Age = age
-				student.Course = course
-
-				// Put updated student back into map
-				students[id] = student
-
+			if success {
 				fmt.Println("Student updated successfully!")
-
 			} else {
-
 				fmt.Println("Student not found")
-
 			}
 
+		// DELETE
+		case 6:
 
-			 // case 6:
-			 case  6:
-				  var id int 
-				  fmt.Println ("Provide the student ID to delete:")
-				   fmt.Scanln( & id)
+			var id int
 
-				    _, ok := students [id]
-					 
-					 if ok {
-						 delete (students  ,id )
-						 fmt.Println ("Student deleted successfully !")
+			fmt.Println("Provide the student ID to delete:")
+			fmt.Scanln(&id)
 
-					 }  else {
-						 fmt.Println ("student not found")
-					 }
+			success := deleteStudent(students, id)
 
+			if success {
+				fmt.Println("Student deleted successfully!")
+			} else {
+				fmt.Println("Student not found")
+			}
 
-
-
-		// ---------------- INVALID CHOICE ----------------
+		// INVALID
 		default:
 
 			fmt.Println("Invalid choice")
