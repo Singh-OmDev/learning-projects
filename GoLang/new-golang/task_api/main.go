@@ -1,59 +1,121 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type Task struct {
-	ID          int    `json:"id"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Completed   bool   `json:"completed"`
+    ID          int    `json:"id"`
+    Title       string `json:"title"`
+    Description string `json:"description"`
+    Completed   bool   `json:"completed"`
 }
 
-// Global tasks
 var tasks = []Task{
-	{
-		ID:          1,
-		Title:       "Learn Go",
-		Description: "Learn REST APIs",
-		Completed:   false,
-	},
-	{
-		ID:          2,
-		Title:       "Build project",
-		Description: "Create Task API",
-		Completed:   false,
-	},
+    {
+        ID:          1,
+        Title:       "Learn Go",
+        Description: "Learn Gin REST API",
+        Completed:   false,
+    },
+    {
+        ID:          2,
+        Title:       "Build project",
+        Description: "Build Task Management API",
+        Completed:   false,
+    },
 }
 
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Hello from Task API!")
+func createTask(c *gin.Context) {
+
+    var newTask Task
+
+    if err := c.ShouldBindJSON(&newTask); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{
+            "error": err.Error(),
+        })
+        return
+    }
+
+    newTask.ID = len(tasks) + 1
+
+    tasks = append(tasks, newTask)
+
+    c.JSON(http.StatusCreated, newTask)
 }
 
-func getTasks(w http.ResponseWriter, r *http.Request) {
+ func getTask(c *gin.Context) {
 
-	w.Header().Set("Content-Type", "application/json")
+	id := c.Param("id")
 
-	json.NewEncoder(w).Encode(tasks)
+	for _, task := range tasks {
+
+		if fmt.Sprint(task.ID) == id {
+
+			c.JSON(http.StatusOK, task)
+			return
+		}
+	}
+
+	c.JSON(http.StatusNotFound, gin.H{
+		"error": "Task not found",
+	})
+
+	 
 }
+
+ func updateTask(c *gin.Context) {
+
+    id := c.Param("id")
+
+    var updatedTask Task
+
+    if err := c.ShouldBindJSON(&updatedTask); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{
+            "error": "Invalid JSON",
+        })
+        return
+    }
+
+    for i := range tasks {
+
+        if fmt.Sprint(tasks[i].ID) == id {
+
+            updatedTask.ID = tasks[i].ID
+
+            tasks[i] = updatedTask
+
+            c.JSON(http.StatusOK, updatedTask)
+            return
+        }
+    }
+
+    c.JSON(http.StatusNotFound, gin.H{
+        "error": "Task not found",
+    })
+}
+
 
 func main() {
 
-	// Home route
-	http.HandleFunc("/", homeHandler)
+    router := gin.Default()
 
-	// Get tasks route
-	http.HandleFunc("/tasks", getTasks)
+    router.GET("/", func(c *gin.Context) {
+        c.JSON(http.StatusOK, gin.H{
+            "message": "Task API is running",
+        })
+    })
 
-	// Start server
-	fmt.Println("Server is running on http://localhost:9000")
+    router.GET("/tasks", func(c *gin.Context) {
+        c.JSON(http.StatusOK, tasks)
+    })
 
-	err := http.ListenAndServe(":9000", nil)
+    router.POST("/tasks", createTask)
 
-	if err != nil {
-		fmt.Println("Error starting server:", err)
-	}
+	 router.GET("/tasks/:id", getTask)
+
+    router.Run(":9000")
 }
