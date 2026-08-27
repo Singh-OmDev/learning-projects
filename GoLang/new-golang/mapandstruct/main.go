@@ -10,6 +10,20 @@ package main
 
   }
 
+   func ( s Student) display (){
+	 fmt.Println ("Name:" , s.name)
+	  fmt.Println ("age is" , s.age)
+	   fmt.Println ("course is", s.course)
+
+
+   }
+    func findStudent(students map[string] Student, name string , )   (Student , bool){
+		 student , ok := students [name]
+		 return student , ok
+		 
+	}
+
+
    
 
   func main (){
@@ -41,14 +55,20 @@ package main
 
    }
 
+    student := students ["om"]
+	student.course = "mechanical engineering"
+	students["om"] = student
+
+ 
 
 
-	  student , ok := students["om"]
-	   fmt.Println ("om student is ", student , "ok is ", ok)
+	 for key , student  := range students {
+		 fmt.Println ("key is "  , key)
+		  student.display ()
+		  fmt.Println ("---------------------")
 	
 
-
-
-
+	 }
+	  
 
   }
