@@ -1,17 +1,14 @@
-package main 
+package main
 
 import (
-	 "fmt"
-	  "mypackage/calculator"
-
+    "fmt"
+    "mypackage/calculator"
 )
 
+func main() {
+    fmt.Println("Main started")
 
- func main (){
-	fmt.Println (calculator.Add ( 30  , 30))
-	 fmt.Println (calculator.Multiply ( 30  , 30))
-	  
-	
+    result := calculator.Add(10, 20)
 
-
- }
+    fmt.Println("Result:", result)
+}
