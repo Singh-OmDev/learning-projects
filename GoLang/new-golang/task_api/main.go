@@ -98,6 +98,28 @@ func createTask(c *gin.Context) {
     })
 }
 
+func deleteTask(c *gin.Context) {
+
+	id := c.Param("id")
+
+	for i := range tasks {
+
+		if fmt.Sprint(tasks[i].ID) == id {
+
+			tasks = append(tasks[:i], tasks[i+1:]...)
+
+			c.JSON(http.StatusOK, gin.H{
+				"message": "Task deleted successfully",
+			})
+
+			return
+		}
+	}
+
+	c.JSON(http.StatusNotFound, gin.H{
+		"error": "Task not found",
+	})
+}
 
 func main() {
 
@@ -116,6 +138,7 @@ func main() {
     router.POST("/tasks", createTask)
 
 	 router.GET("/tasks/:id", getTask)
+	   router.DELETE("/tasks/:id", deleteTask)
 
     router.Run(":9000")
 }
