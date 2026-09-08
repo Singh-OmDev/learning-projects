@@ -1,26 +1,27 @@
-package main 
+ package main 
+
   import (
 	 "fmt"
-	 "sync"
+	  "sync"
   )
-   func main (){
 
-	 var wg sync.WaitGroup
-	  wg.Add (2)
-	   
+    func task ( id int  , w *sync.WaitGroup) {
+		 defer w.Done ()
+		   fmt.Println ("doing task :"  , id )
 
-	   go func (){
-		 defer wg.Done ()
-		  fmt.Println ("hello from goroutine 1")
+	}
 
-	   } ()
+   func main () {
 
-	     go func () {
-			  defer wg.Done ()
+	  var wg sync.WaitGroup
+	    for i := 0 ; i<=10; i ++ {
+			 wg.Add (1)
+			  
 
-			   fmt.Println ("hello from goroutine 2")
+			  go task  ( i  , &wg)
 
-		 } ()
-		  wg.Wait ()
-		   fmt.Println ("Main completed")
+		}
+		 wg.Wait ()
+
+
    }
