@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Monitoring Dashboard</title>
+</head>
+<body>
+    <h1>DevOps Monitoring Dashboard</h1>
+
+    <h2>System Metrics</h2>
+
+    <p>CPU Usage: <span id="cpu">Loading...</span>%</p>
+    <p>Memory Usage: <span id="memory">Loading...</span>%</p>
+    <p>Disk Usage: <span id="disk">Loading...</span>%</p>
+
+    <script>
+        async function loadMetrics() {
+            const response = await fetch("/metrics");
+            const metrics = await response.json();
+
+            document.getElementById("cpu").textContent = metrics.cpu_usage;
+            document.getElementById("memory").textContent = metrics.memory_usage;
+            document.getElementById("disk").textContent = metrics.disk_usage;
+        }
+
+        loadMetrics();
+    </script>
+</body>
+</html>

@@ -50,7 +50,7 @@ func statusHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(metrics)
 }
 func main() {
-	http.HandleFunc("/", homeHandler)
+	http.Handle("/", http.FileServer(http.Dir("./static")))
 	http.HandleFunc("/health", healthHandler)
 	http.HandleFunc("/status", statusHandler)
 	http.HandleFunc("/metrics", metricsHandler)
