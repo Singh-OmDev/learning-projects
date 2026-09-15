@@ -21,9 +21,9 @@ func main() {
 	 }
 	  defer conn.Close ()
 
-	  client :=pb.NewGreetServiceClient(conn)
+	 client :=pb.NewGreetServiceClient(conn)
 
-	 Names : [] string {"Omsingh" , "John" , "Doe" , "Jane" , "Smith"},
+	//names := []string{"Omsingh", "John", "Doe", "Jane", "Smith"}
 	  callSayHello  (client)
 
 
