@@ -19,14 +19,32 @@ var jobs []Job
 var nextID = 1
  var  jobQueue  chan Job
 
-     func worker  ( ) {
-	 for job  := range  jobQueue  {
-		  fmt.Println ( "Processing job ID  :" , job.ID  ,  "Type :" , job.Type , "Payload :"  , job.Payload )
-		   time.Sleep ( 2 * time.Second) 
-		    fmt.Println  (  "completed job  ID : " , job.ID )
-	 }
-   }
+     func worker(id int) {
+	for job := range jobQueue {
 
+		// pending → processing
+		for i := range jobs {
+			if jobs[i].ID == job.ID {
+				jobs[i].Status = "processing"
+				break
+			}
+		}
+
+		fmt.Println("Worker", id, "processing job ID:", job.ID)
+
+		time.Sleep(2 * time.Second)
+
+		// processing → completed
+		for i := range jobs {
+			if jobs[i].ID == job.ID {
+				jobs[i].Status = "completed"
+				break
+			}
+		}
+
+		fmt.Println("Worker", id, "completed job ID:", job.ID)
+	}
+}
 func main() {
 	r := gin.Default()
 	jobQueue = make(chan Job, 10)
